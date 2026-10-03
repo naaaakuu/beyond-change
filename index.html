@@ -2,192 +2,958 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Beyond Change</title>
+    <!-- Google Fonts: Great Vibes (cursive), Plus Jakarta Sans (body), Outfit (headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            --bg-deep: #05130e;
+            --bg-forest: #092017;
+            --bg-card: rgba(13, 38, 28, 0.72);
+            --bg-card-hover: rgba(18, 51, 38, 0.85);
+            --border-leaf: rgba(52, 211, 153, 0.22);
+            --border-gold: rgba(253, 224, 71, 0.35);
+            --text-main: #f0fdf4;
+            --text-muted: #a7f3d0;
+            --text-sub: #94a3b8;
+            --primary-emerald: #10b981;
+            --accent-mint: #34d399;
+            --accent-glow: #6ee7b7;
+            --accent-gold: #fde047;
+            --cursive-font: 'Great Vibes', cursive;
+            --sans-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --heading-font: 'Outfit', sans-serif;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
+            font-family: var(--sans-font);
+            background: linear-gradient(175deg, #040f0b 0%, #081d15 25%, #0b261b 50%, #061710 80%, #030a07 100%);
+            color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            line-height: 1.6;
             overflow-x: hidden;
             position: relative;
+            padding-bottom: 5rem;
+            line-height: 1.65;
         }
 
-        /* Ambient background glow */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+        /* Ambient glowing botanic spheres in background */
+        .ambient-glow-1 {
+            position: fixed;
+            top: -100px;
+            left: -80px;
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, rgba(5, 19, 14, 0) 70%);
+            filter: blur(50px);
             z-index: 0;
             pointer-events: none;
         }
 
-        .container {
-            max-width: 800px;
+        .ambient-glow-2 {
+            position: fixed;
+            top: 45%;
+            right: -120px;
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.14) 0%, rgba(5, 19, 14, 0) 70%);
+            filter: blur(60px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ambient-glow-3 {
+            position: fixed;
+            bottom: 5%;
+            left: 20%;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(253, 224, 71, 0.09) 0%, rgba(5, 19, 14, 0) 70%);
+            filter: blur(50px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Subtle floating leaves canvas */
+        #leaf-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            text-align: center;
-            position: relative;
+            height: 100%;
+            pointer-events: none;
             z-index: 1;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 0.4rem 1.2rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.875rem;
+        /* Mobile Container */
+        .mobile-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 1.25rem 1rem 3rem 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-wrapper {
+                max-width: 640px;
+                padding: 2.5rem 1.5rem;
+            }
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            padding: 1.75rem 0 1.25rem;
+        }
+
+        .nature-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.35rem 0.95rem;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 999px;
+            font-size: 0.78rem;
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            border-radius: 9999px;
+            color: #6ee7b7;
+            margin-bottom: 0.85rem;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
         }
 
-        h1 {
-            font-size: clamp(2.8rem, 6vw, 4.5rem);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .nature-badge svg {
+            width: 14px;
+            height: 14px;
+            fill: #34d399;
         }
 
-        .lead {
-            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-            color: #e2e8f0;
-            margin-bottom: 2.5rem;
-            font-weight: 400;
-        }
-
-        .content-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(16px);
-            border-radius: 1.25rem;
-            padding: 2.5rem;
-            text-align: left;
-            margin-bottom: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .content-card h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #f8fafc;
-        }
-
-        .content-card p {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .content-card p:last-child {
-            margin-bottom: 0;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .feature-box {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 0.85rem;
-            padding: 1.25rem;
-        }
-
-        .feature-box h3 {
-            font-size: 1.1rem;
-            color: #38bdf8;
+        /* Beautiful Cursive Title */
+        .cursive-title-container {
+            position: relative;
             margin-bottom: 0.5rem;
         }
 
-        .feature-box p {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
+        .cursive-title {
+            font-family: var(--cursive-font);
+            font-size: clamp(3.2rem, 11vw, 4.6rem);
+            font-weight: 400;
+            line-height: 1.15;
+            background: linear-gradient(135deg, #f0fdf4 0%, #a7f3d0 45%, #fde047 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 16px rgba(52, 211, 153, 0.35));
+            letter-spacing: 0.01em;
+            transform: rotate(-1.5deg);
+        }
+
+        .tagline {
+            font-family: var(--heading-font);
+            font-size: 0.98rem;
+            color: #d1fae5;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            max-width: 360px;
+            margin: 0.4rem auto 0;
+            opacity: 0.9;
+        }
+
+        /* Quick Navigation Chips for Mobile */
+        .quick-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.25rem 0 1.75rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.38rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            color: #d1fae5;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .nav-chip:hover, .nav-chip:active {
+            background: rgba(16, 185, 129, 0.25);
+            border-color: rgba(52, 211, 153, 0.5);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* Video Section & Botanic Frame */
+        .video-section {
+            margin-bottom: 2.25rem;
+        }
+
+        .video-frame-outer {
+            position: relative;
+            background: linear-gradient(145deg, rgba(52, 211, 153, 0.35), rgba(16, 185, 129, 0.1), rgba(253, 224, 71, 0.25));
+            padding: 6px;
+            border-radius: 22px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7),
+                        0 0 25px rgba(16, 185, 129, 0.22);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-frame-inner {
+            background: #020705;
+            border-radius: 17px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Vine / Botanical corner decorations */
+        .corner-leaf {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        .corner-top-left {
+            top: -7px;
+            left: -7px;
+            transform: rotate(-15deg);
+        }
+
+        .corner-top-right {
+            top: -7px;
+            right: -7px;
+            transform: rotate(75deg);
+        }
+
+        .corner-bottom-left {
+            bottom: -7px;
+            left: -7px;
+            transform: rotate(-105deg);
+        }
+
+        .corner-bottom-right {
+            bottom: -7px;
+            right: -7px;
+            transform: rotate(165deg);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            background: #000;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+            outline: none;
+        }
+
+        .video-caption {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0.5rem 0.2rem;
+            font-size: 0.82rem;
+            color: #94a3b8;
+        }
+
+        .video-caption span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: #a7f3d0;
+            font-weight: 500;
+        }
+
+        /* Card Section Styles */
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-leaf);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.5rem 1.25rem;
+            margin-bottom: 1.75rem;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-mint), var(--accent-gold), transparent);
+            opacity: 0.7;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .icon-circle svg {
+            width: 22px;
+            height: 22px;
+            fill: #6ee7b7;
+        }
+
+        .section-title-wrap h2 {
+            font-family: var(--heading-font);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+        }
+
+        .section-title-wrap .subtitle {
+            font-size: 0.82rem;
+            color: #6ee7b7;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .law-quote-box {
+            background: rgba(6, 26, 19, 0.7);
+            border-left: 3.5px solid var(--accent-mint);
+            padding: 0.85rem 1rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1.15rem;
+            font-size: 0.94rem;
+            color: #e2e8f0;
+            font-style: italic;
+        }
+
+        .law-quote-box strong {
+            color: var(--accent-gold);
+            font-style: normal;
+        }
+
+        .simple-desc {
+            font-size: 0.94rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* SVG Visual Diagrams */
+        .diagram-container {
+            background: rgba(4, 16, 11, 0.75);
+            border: 1px solid rgba(52, 211, 153, 0.15);
+            border-radius: 14px;
+            padding: 1rem 0.75rem;
+            margin: 1.15rem 0;
+            text-align: center;
+        }
+
+        .diagram-label {
+            font-size: 0.78rem;
+            color: #6ee7b7;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+        }
+
+        .diagram-svg {
+            width: 100%;
+            height: auto;
+            max-width: 420px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Mobile Key Takeaway Pill Grid */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .pillar-card {
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(52, 211, 153, 0.16);
+            border-radius: 12px;
+            padding: 0.85rem 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .pillar-num {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            line-height: 1;
+            padding-top: 0.15rem;
+            font-family: var(--heading-font);
+        }
+
+        .pillar-text h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 0.2rem;
+        }
+
+        .pillar-text p {
+            font-size: 0.84rem;
+            color: #94a3b8;
+            line-height: 1.45;
             margin: 0;
         }
 
+        /* Philosophical Connection Badge */
+        .wisdom-box {
+            margin-top: 1rem;
+            padding: 0.85rem 1rem;
+            background: rgba(253, 224, 71, 0.06);
+            border: 1px dashed rgba(253, 224, 71, 0.3);
+            border-radius: 12px;
+            font-size: 0.86rem;
+            color: #fef08a;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+
+        .wisdom-box svg {
+            width: 18px;
+            height: 18px;
+            fill: #fde047;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        /* Instagram Section */
+        .instagram-section {
+            margin-bottom: 2rem;
+        }
+
+        .instagram-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(225, 48, 108, 0.3);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.25rem;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5),
+                        0 0 20px rgba(225, 48, 108, 0.15);
+            text-align: center;
+        }
+
+        .insta-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .insta-icon-gradient {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(220, 39, 67, 0.35);
+        }
+
+        .insta-icon-gradient svg {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff;
+        }
+
+        .insta-header h3 {
+            font-family: var(--heading-font);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .insta-embed-box {
+            position: relative;
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .insta-iframe {
+            width: 100%;
+            height: 480px;
+            border: none;
+            overflow: hidden;
+            border-radius: 16px;
+            display: block;
+            background: #081a13;
+        }
+
+        .insta-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            width: 100%;
+            padding: 0.85rem 1.25rem;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.92rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(220, 39, 67, 0.35);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .insta-btn:hover, .insta-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(220, 39, 67, 0.5);
+        }
+
+        /* Peaceful Footer */
         footer {
-            margin-top: 2rem;
-            font-size: 0.875rem;
+            text-align: center;
+            padding: 1.5rem 0.5rem 0;
             color: #64748b;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(52, 211, 153, 0.1);
+        }
+
+        footer .footer-quote {
+            font-family: var(--cursive-font);
+            font-size: 1.8rem;
+            color: #a7f3d0;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        footer p {
+            margin-bottom: 0.4rem;
+        }
+
+        footer a {
+            color: #34d399;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="badge">A Vision for Progress</div>
-        <h1>Beyond Change</h1>
-        <p class="lead">Moving past ordinary changes to build lasting, positive growth.</p>
 
-        <div class="content-card">
-            <h2>What does "Beyond Change" mean in simple English?</h2>
-            <p>
-                Change happens around us all the time. The seasons change, technology evolves, and routines shift.
-            </p>
-            <p>
-                Going <strong>beyond change</strong> means not just waiting for change to happen to us, but actively leading it. It means finding real solutions, thinking forward, and making sure our efforts leave a lasting and meaningful impact.
-            </p>
+    <!-- Ambient glowing lights -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+    <div class="ambient-glow-3"></div>
 
-            <div class="grid">
-                <div class="feature-box">
-                    <h3>1. Understand</h3>
-                    <p>Learn how things work today and identify what truly needs improvement.</p>
-                </div>
-                <div class="feature-box">
-                    <h3>2. Innovate</h3>
-                    <p>Create new and simple ideas that solve everyday challenges effectively.</p>
-                </div>
-                <div class="feature-box">
-                    <h3>3. Transform</h3>
-                    <p>Build positive habits and enduring results that stay for the future.</p>
+    <!-- Falling botanical leaves canvas -->
+    <canvas id="leaf-canvas"></canvas>
+
+    <div class="mobile-wrapper">
+
+        <!-- Header -->
+        <header>
+            <div class="nature-badge">
+                <svg viewBox="0 0 24 24"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+                <span>Peaceful Ecology & Wisdom</span>
+            </div>
+
+            <!-- Beautiful Cursive Title -->
+            <div class="cursive-title-container">
+                <h1 class="cursive-title">beyond change</h1>
+            </div>
+
+            <p class="tagline">Where ancient universal truth meets modern science.</p>
+
+            <!-- Mobile Quick Navigation -->
+            <div class="quick-nav">
+                <a href="#video-frame" class="nav-chip">🎬 Watch Video</a>
+                <a href="#energy-section" class="nav-chip">⚡ Energy</a>
+                <a href="#matter-section" class="nav-chip">🌱 Matter</a>
+                <a href="#reel-section" class="nav-chip">📱 Instagram</a>
+            </div>
+        </header>
+
+        <!-- Video Player Section with Nature Frames -->
+        <section class="video-section" id="video-frame">
+            <div class="video-frame-outer">
+                <!-- Botanical Corner Decorations -->
+                <svg class="corner-leaf corner-top-left" viewBox="0 0 24 24"><path fill="#34d399" d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+                <svg class="corner-leaf corner-top-right" viewBox="0 0 24 24"><path fill="#34d399" d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+                <svg class="corner-leaf corner-bottom-left" viewBox="0 0 24 24"><path fill="#34d399" d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+                <svg class="corner-leaf corner-bottom-right" viewBox="0 0 24 24"><path fill="#34d399" d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+
+                <div class="video-frame-inner">
+                    <div class="video-wrapper">
+                        <video id="mainVideo" controls playsinline preload="metadata" poster="poster.jpg">
+                            <source src="mahavira.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
                 </div>
             </div>
-        </div>
 
+            <div class="video-caption">
+                <span>🌿 Mahāvīra & The Eternal Cosmos</span>
+                <span>Tap to Play</span>
+            </div>
+        </section>
+
+        <!-- Topic 1: Conservation of Energy -->
+        <section class="section-card" id="energy-section">
+            <div class="section-header">
+                <div class="icon-circle">
+                    <svg viewBox="0 0 24 24"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"/></svg>
+                </div>
+                <div class="section-title-wrap">
+                    <span class="subtitle">Universal Law I</span>
+                    <h2>Conservation of Energy</h2>
+                </div>
+            </div>
+
+            <div class="law-quote-box">
+                "Energy can neither be created nor destroyed; it can only transform from one form to another."
+                <br><strong>Total Energy (\(\Delta E\)) = 0 (Constant)</strong>
+            </div>
+
+            <p class="simple-desc">
+                In simple English: Energy in our universe never disappears. When you burn fuel, turn on a light bulb, or ride a bicycle, you are not creating new energy—you are simply guiding energy into a new outfit.
+            </p>
+
+            <!-- Visual Flowchart for Mobile: Energy Cycle -->
+            <div class="diagram-container">
+                <div class="diagram-label">
+                    <span>☀️ How Energy Transforms in Nature</span>
+                </div>
+                <svg class="diagram-svg" viewBox="0 0 380 150">
+                    <defs>
+                        <linearGradient id="gradSun" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fde047"/>
+                            <stop offset="100%" stop-color="#eab308"/>
+                        </linearGradient>
+                        <linearGradient id="gradLeaf" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#34d399"/>
+                            <stop offset="100%" stop-color="#059669"/>
+                        </linearGradient>
+                        <linearGradient id="gradKinetic" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#38bdf8"/>
+                            <stop offset="100%" stop-color="#2563eb"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Step 1: Sun / Solar -->
+                    <circle cx="55" cy="55" r="32" fill="url(#gradSun)" opacity="0.9"/>
+                    <text x="55" y="52" fill="#0f172a" font-weight="700" font-size="11" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif">SOLAR</text>
+                    <text x="55" y="66" fill="#0f172a" font-size="9" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif">Light Rays</text>
+
+                    <!-- Arrow 1 -->
+                    <path d="M 95 55 L 128 55" stroke="#34d399" stroke-width="2.5" stroke-dasharray="4,3"/>
+                    <polygon points="132,55 125,50 125,60" fill="#34d399"/>
+                    <text x="113" y="44" fill="#a7f3d0" font-size="8.5" text-anchor="middle">Photosynthesis</text>
+
+                    <!-- Step 2: Plant / Chemical -->
+                    <rect x="140" y="25" width="95" height="60" rx="12" fill="url(#gradLeaf)" opacity="0.9"/>
+                    <text x="187" y="52" fill="#ffffff" font-weight="700" font-size="11" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif">CHEMICAL</text>
+                    <text x="187" y="66" fill="#ecfdf5" font-size="9" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif">Stored in Plants</text>
+
+                    <!-- Arrow 2 -->
+                    <path d="M 242 55 L 275 55" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="4,3"/>
+                    <polygon points="279,55 272,50 272,60" fill="#38bdf8"/>
+                    <text x="260" y="44" fill="#7dd3fc" font-size="8.5" text-anchor="middle">Nutrition</text>
+
+                    <!-- Step 3: Life / Motion -->
+                    <rect x="285" y="25" width="85" height="60" rx="12" fill="url(#gradKinetic)" opacity="0.9"/>
+                    <text x="327" y="52" fill="#ffffff" font-weight="700" font-size="11" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif">KINETIC</text>
+                    <text x="327" y="66" fill="#e0f2fe" font-size="9" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif">Life & Motion</text>
+
+                    <!-- Returning flow loop -->
+                    <path d="M 330 92 C 330 135, 55 135, 55 95" fill="none" stroke="rgba(52, 211, 153, 0.4)" stroke-width="2" stroke-dasharray="3,3"/>
+                    <text x="190" y="132" fill="#6ee7b7" font-size="9" font-style="italic" text-anchor="middle">Heat radiates back into the cosmos — perfectly conserved</text>
+                </svg>
+            </div>
+
+            <!-- 3 Pillars on Mobile -->
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <span class="pillar-num">01</span>
+                    <div class="pillar-text">
+                        <h4>Potential & Kinetic Harmony</h4>
+                        <p>Water sitting high in a dam stores potential energy. As it drops through turbines, it shifts to motion (kinetic) and electricity.</p>
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <span class="pillar-num">02</span>
+                    <div class="pillar-text">
+                        <h4>The Zero Waste Law</h4>
+                        <p>No machine or living being can ever destroy an ounce of energy. It radiates as warmth, sound, or light.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wisdom-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <span><strong>The Spiritual Insight:</strong> Change is merely the costume that energy wears. The essence remains forever untouched and infinite.</span>
+            </div>
+        </section>
+
+        <!-- Topic 2: Conservation of Matter -->
+        <section class="section-card" id="matter-section">
+            <div class="section-header">
+                <div class="icon-circle">
+                    <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/></svg>
+                </div>
+                <div class="section-title-wrap">
+                    <span class="subtitle">Universal Law II</span>
+                    <h2>Conservation of Matter</h2>
+                </div>
+            </div>
+
+            <div class="law-quote-box">
+                "Matter can neither be created nor destroyed by chemical or physical means."
+                <br><strong>Mass of Reactants = Mass of Products</strong>
+            </div>
+
+            <p class="simple-desc">
+                In simple English: Every single atom in your body, in every leaf of every tree, and in the rivers was formed billions of years ago. When a tree falls or wood burns, not a single atom disappears—they simply reconnect into air, ash, and soil.
+            </p>
+
+            <!-- Visual Flowchart for Mobile: Cycle of Matter -->
+            <div class="diagram-container">
+                <div class="diagram-label">
+                    <span>🔄 The Eternal Recycling of Atoms</span>
+                </div>
+                <svg class="diagram-svg" viewBox="0 0 380 150">
+                    <!-- Circle 1: Seed / Soil -->
+                    <circle cx="65" cy="75" r="30" fill="#134e4a" stroke="#2dd4bf" stroke-width="2"/>
+                    <text x="65" y="70" fill="#ffffff" font-weight="700" font-size="11" text-anchor="middle">SOIL & SEED</text>
+                    <text x="65" y="85" fill="#99f6e4" font-size="9" text-anchor="middle">Minerals</text>
+
+                    <!-- Path 1 to Tree -->
+                    <path d="M 98 75 L 140 75" stroke="#34d399" stroke-width="2.5"/>
+                    <polygon points="144,75 137,70 137,80" fill="#34d399"/>
+
+                    <!-- Circle 2: Living Tree -->
+                    <circle cx="190" cy="75" r="36" fill="#065f46" stroke="#34d399" stroke-width="2.5"/>
+                    <text x="190" y="70" fill="#ffffff" font-weight="700" font-size="11" text-anchor="middle">LIVING TREE</text>
+                    <text x="190" y="85" fill="#a7f3d0" font-size="9" text-anchor="middle">Growth & Life</text>
+
+                    <!-- Path 2 to Fallen Leaves -->
+                    <path d="M 230 75 L 272 75" stroke="#fde047" stroke-width="2.5"/>
+                    <polygon points="276,75 269,70 269,80" fill="#fde047"/>
+
+                    <!-- Circle 3: Decomposition -->
+                    <circle cx="315" cy="75" r="30" fill="#854d0e" stroke="#fde047" stroke-width="2"/>
+                    <text x="315" y="70" fill="#ffffff" font-weight="700" font-size="11" text-anchor="middle">FALLEN LEAF</text>
+                    <text x="315" y="85" fill="#fef08a" font-size="9" text-anchor="middle">Nourishment</text>
+
+                    <!-- Loop back: Leaf becomes soil -->
+                    <path d="M 315 110 C 315 145, 65 145, 65 110" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="4,3"/>
+                    <polygon points="65,105 60,113 70,113" fill="#2dd4bf"/>
+                    <text x="190" y="142" fill="#a7f3d0" font-size="9" font-style="italic" text-anchor="middle">Atoms return to nurture fresh sprouts</text>
+                </svg>
+            </div>
+
+            <!-- Real-World Examples -->
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <span class="pillar-num">💧</span>
+                    <div class="pillar-text">
+                        <h4>Prehistoric Drops of Water</h4>
+                        <p>The water droplets you drink today are the very same molecules that rained upon ancient forests millions of years ago.</p>
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <span class="pillar-num">🕯️</span>
+                    <div class="pillar-text">
+                        <h4>The Burning Candle Secret</h4>
+                        <p>When candle wax melts and vanishes into thin air, the total weight of carbon dioxide + water vapor formed equals the original wax and oxygen combined!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wisdom-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <span><strong>Mahāvīra’s Teaching:</strong> <em>"Uppanne vā, vigame vā, dhuve vā"</em> — Substance is eternal (*Dravya*). Only its modes and shapes change (*Paryāya*). Nothing is truly born, and nothing ever perishes.</span>
+            </div>
+        </section>
+
+        <!-- Topic 3: Instagram Reel Section -->
+        <section class="instagram-section" id="reel-section">
+            <div class="instagram-card">
+                <div class="insta-header">
+                    <div class="insta-icon-gradient">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </div>
+                    <h3>Connected Reel Experience</h3>
+                </div>
+
+                <div class="insta-embed-box">
+                    <iframe class="insta-iframe" src="https://www.instagram.com/reel/Dd_0CzCquFM/embed/" allowfullscreen="true" scrolling="no"></iframe>
+                </div>
+
+                <a href="https://www.instagram.com/reel/Dd_0CzCquFM/?stkn=MTh6eW4weHR4MHhtZQ==" target="_blank" rel="noopener noreferrer" class="insta-btn">
+                    <svg style="width:18px;height:18px;fill:#fff;" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <span>Open & Play Reel on Instagram</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Peaceful Footer -->
         <footer>
-            &copy; 2026 Beyond Change. Built with simplicity and purpose.
+            <span class="footer-quote">beyond change</span>
+            <p>Conceived for Science Exhibition & Universal Insights</p>
+            <p>&copy; 2026 • Designed for Mobile Experience</p>
         </footer>
+
     </div>
+
+    <!-- Script for Peaceful Floating Leaves Background -->
+    <script>
+        (function() {
+            const canvas = document.getElementById('leaf-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let leaves = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            // Leaf Particle Object
+            function Leaf() {
+                this.reset();
+            }
+
+            Leaf.prototype.reset = function() {
+                this.x = Math.random() * width;
+                this.y = -20 - Math.random() * 50;
+                this.size = 8 + Math.random() * 12;
+                this.speedX = -0.5 + Math.random() * 1;
+                this.speedY = 0.6 + Math.random() * 0.9;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = -1 + Math.random() * 2;
+                this.opacity = 0.15 + Math.random() * 0.25;
+                // Green tints
+                const greens = ['#34d399', '#10b981', '#6ee7b7', '#a7f3d0'];
+                this.color = greens[Math.floor(Math.random() * greens.length)];
+            };
+
+            Leaf.prototype.update = function() {
+                this.x += this.speedX + Math.sin(this.y * 0.01) * 0.5;
+                this.y += this.speedY;
+                this.rotation += this.rotationSpeed;
+
+                if (this.y > height + 20 || this.x < -30 || this.x > width + 30) {
+                    this.reset();
+                }
+            };
+
+            Leaf.prototype.draw = function() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+
+                // Draw simple organic leaf shape
+                ctx.beginPath();
+                ctx.moveTo(0, -this.size);
+                ctx.quadraticCurveTo(this.size * 0.6, 0, 0, this.size);
+                ctx.quadraticCurveTo(-this.size * 0.6, 0, 0, -this.size);
+                ctx.fill();
+
+                ctx.restore();
+            };
+
+            // Spawn leaves based on mobile screen width
+            const count = Math.min(22, Math.floor(window.innerWidth / 20));
+            for (let i = 0; i < count; i++) {
+                const l = new Leaf();
+                l.y = Math.random() * height; // initial scatter
+                leaves.push(l);
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < leaves.length; i++) {
+                    leaves[i].update();
+                    leaves[i].draw();
+                }
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        })();
+    </script>
 </body>
 </html>
